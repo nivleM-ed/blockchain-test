@@ -1,5 +1,4 @@
 const SocketActions = require('./constants');
-
 const Transaction = require('./modals/transaction');
 const Blockchain = require('./modals/chain');
 

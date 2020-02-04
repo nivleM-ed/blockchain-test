@@ -4,34 +4,68 @@ var router = express.Router();
 const axios = require('axios');
 const client = require('socket.io-client');
 const BlockChain = require('../modals/chain');
-const SocketActions  = require('../constants');
+const SocketActions = require('../constants');
 const socketListeners = require('../socketListeners');
 
-const { blockChain } = require('../bin/www');
+const {
+  blockchain
+} = require('../bin/www');
+
+const blockChain = new BlockChain(null, null);
+blockChain.blocks = blockchain.blocks;
+blockChain.currentTransactions = blockchain.currentTransactions;
+blockChain.nodes = blockchain.nodes;
+blockChain.io = blockchain.io;
 
 router.post('/nodes', (req, res) => {
-  const { host, port } = req.body;
-  const { callback } = req.query;
+  const {
+    host,
+    port
+  } = req.body;
+  const {
+    callback
+  } = req.query;
   const node = `http://${host}:${port}`;
   const socketNode = socketListeners(client(node), blockChain);
-  blockChain.addNode(socketNode, blockChain);
-  if (callback === 'true') {
+
+  console.log(node);
+  console.log(req.hostname);
+  console.log(callback);
+
+  try {
+    blockChain.addNode(socketNode, blockChain);
+  } catch(e) {
+    console.log(e);
+    res.send(e)
+  }
+  
+  if (callback == 'true') {
     console.info(`Added node ${node} back`);
-    res.json({ status: 'Added node Back' }).end();
+    res.json({
+      status: 'Added node Back'
+    }).end();
   } else {
     axios.post(`${node}/nodes?callback=true`, {
       host: req.hostname,
       port: PORT,
     });
     console.info(`Added node ${node}`);
-    res.json({ status: 'Added node' }).end();
+    res.json({
+      status: 'Added node'
+    }).end();
   }
 });
 
 router.post('/transaction', (req, res) => {
-  const { sender, receiver, amount } = req.body;
+  const {
+    sender,
+    receiver,
+    amount
+  } = req.body;
   io.emit(SocketActions.ADD_TRANSACTION, sender, receiver, amount);
-  res.json({ message: 'transaction success' }).end();
+  res.json({
+    message: 'transaction success'
+  }).end();
 });
 
 router.get('/chain', (req, res) => {

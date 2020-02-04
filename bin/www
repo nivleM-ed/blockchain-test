@@ -24,7 +24,7 @@ app.set('port', port);
 
 var server = http.createServer(app);
 const io = require('socket.io')(server);
-const blockChain = new BlockChain(null, io);
+const blockchain = new BlockChain(null, io);
 
 io.on('connection', (socket) => {
   console.info(`Socket connected, ID: ${socket.id}`);
@@ -37,13 +37,13 @@ io.on('connection', (socket) => {
  * Listen on provided port, on all network interfaces.
  */
 
-blockChain.addNode(socketListeners(client(`http://localhost:${port}`), blockChain));
+blockchain.addNode(socketListeners(client(`http://localhost:${port}`), blockchain));
 
 server.listen(port, () => console.info(`Express server running on ${port}...`));
 server.on('error', onError);
 server.on('listening', onListening);
 
-module.exports = blockChain;
+module.exports = blockchain;
 
 /**
  * Normalize a port into a number, string, or false.

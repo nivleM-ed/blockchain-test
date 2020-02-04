@@ -10,6 +10,34 @@ class Blockchain {
     this.io = io;
   }
 
+  get blocks() {
+    return this._blocks;
+  }
+  set blocks(in_blocks) {
+    this._blocks = in_blocks;
+  }
+
+  get currentTransactions() {
+    return this._currentTransactions;
+  }
+  set currentTransactions(in_currentTransactions) {
+    this._currentTransactions = in_currentTransactions;
+  }
+
+  get nodes() {
+    return this._nodes;
+  }
+  set nodes(in_nodes) {
+    this._nodes = in_nodes;
+  }
+
+  get io() {
+    return this._io;
+  }
+  set io(in_io) {
+    this._io = in_io;
+  }
+
   addNode(node) {
     this.nodes.push(node);
   }

@@ -4,29 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-const axios = require('axios');
-const SocketActions  = require('./constants');
-const socketListeners = require('./socketListeners');
-var socket_io = require( "socket.io" );
-
 var indexRouter = require('./routes/index');
 var app = express();
-
-// Socket.io
-var io = socket_io();
-app.io = io;
-app.blockChain = '';
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'pug');
-
-io.on('connection', (socket) => {
-  console.info(`Socket connected, ID: ${socket.id}`);
-  socket.on('disconnect', () => {
-    console.log(`Socket disconnected, ID: ${socket.id}`);
-  });
-});
 
 app.use(logger('dev'));
 app.use(express.json());

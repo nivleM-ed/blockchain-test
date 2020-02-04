@@ -10,6 +10,8 @@ const socketListeners = require('../socketListeners');
 const BlockChain = require('../modals/chain');
 var debug = require('debug')('blockchain-test:server');
 var http = require('http');
+var socketApi = require('../socketApi');
+var io = socketApi.io;
 
 /**
  * Get port from environment and store in Express.
@@ -23,11 +25,9 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-var io = app.io;
-var blockChain = app.blockChain;
-
 io.attach(server);
-blockChain = new BlockChain(null, io);
+
+var {blockChain} = require('../myChain');
 
 // io.on('connection', (socket) => {
 //   console.info(`Socket connected, ID: ${socket.id}`);

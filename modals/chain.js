@@ -11,6 +11,7 @@ class Blockchain {
   }
 
   addNode(node) {
+    console.log(`Added new node : ${this.nodes.length+1}`)
     this.nodes.push(node);
   }
 

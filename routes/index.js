@@ -7,15 +7,8 @@ const BlockChain = require('../modals/chain');
 const SocketActions = require('../constants');
 const socketListeners = require('../socketListeners');
 
-const {
-  blockchain
-} = require('../bin/www');
-
-const blockChain = new BlockChain(null, null);
-blockChain.blocks = blockchain.blocks;
-blockChain.currentTransactions = blockchain.currentTransactions;
-blockChain.nodes = blockchain.nodes;
-blockChain.io = blockchain.io;
+const main = require('../bin/www');
+const blockChain = main.blockChain;
 
 router.post('/nodes', (req, res) => {
   const {
@@ -28,18 +21,15 @@ router.post('/nodes', (req, res) => {
   const node = `http://${host}:${port}`;
   const socketNode = socketListeners(client(node), blockChain);
 
-  console.log(node);
-  console.log(req.hostname);
-  console.log(callback);
-
   try {
     blockChain.addNode(socketNode, blockChain);
   } catch(e) {
     console.log(e);
-    res.send(e)
+    res.send(e);
   }
+ 
   
-  if (callback == 'true') {
+  if (callback === 'true') {
     console.info(`Added node ${node} back`);
     res.json({
       status: 'Added node Back'

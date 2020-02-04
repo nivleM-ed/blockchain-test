@@ -7,8 +7,8 @@ const BlockChain = require('../modals/chain');
 const SocketActions = require('../constants');
 const socketListeners = require('../socketListeners');
 
-const main = require('../bin/www');
-const blockChain = main.blockChain;
+const app = require('../app');
+const blockChain = app.blockChain;
 
 router.post('/nodes', (req, res) => {
   const {

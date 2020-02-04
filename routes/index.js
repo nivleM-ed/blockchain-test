@@ -5,9 +5,10 @@ const axios = require('axios');
 const client = require('socket.io-client');
 const BlockChain = require('../modals/chain');
 const SocketActions = require('../constants');
-const socketListeners = require('../socketListeners');
+const socketListeners = require('../socket/socketListeners');
 
-const {blockChain} = require('../myChain');
+const {blockChain} = require('../modals/chain');
+var {gPort} = require('../port');
 
 router.post('/nodes', (req, res) => {
   const {
@@ -24,24 +25,28 @@ router.post('/nodes', (req, res) => {
     blockChain.addNode(socketNode, blockChain);
   } catch(e) {
     console.log(e);
-    res.send(e);
+    res.send({e});
   }
  
-  
-  if (callback === 'true') {
-    console.info(`Added node ${node} back`);
-    res.json({
-      status: 'Added node Back'
-    }).end();
-  } else {
-    axios.post(`${node}/nodes?callback=true`, {
-      host: req.hostname,
-      port: PORT,
-    });
-    console.info(`Added node ${node}`);
-    res.json({
-      status: 'Added node'
-    }).end();
+  try {
+    if (callback === 'true') {
+      console.info(`Added node ${node} back`);
+      res.json({
+        status: 'Added node Back'
+      }).end();
+    } else {
+      axios.post(`${node}/nodes?callback=true`, {
+        host: req.hostname,
+        port: gPort.port,
+      });
+      console.info(`Added node ${node}`);
+      res.json({
+        status: 'Added node'
+      }).end();
+    }
+  } catch(e) {
+    console.log(e);
+    res.send({e})
   }
 });
 

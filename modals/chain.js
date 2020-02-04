@@ -1,6 +1,8 @@
 const Block = require('./block');
 const actions = require('../constants');
 const { generateProof, isProofValid } = require('../utils/proof');
+var socketApi = require('../socket/socketApi');
+var io = socketApi.io;
 
 class Blockchain {
   constructor(blocks, io) {
@@ -64,4 +66,5 @@ class Blockchain {
   /* Stringify and Parsing functions */
 }
 
-module.exports = Blockchain;
+// module.exports = Blockchain;
+exports.blockChain = new Blockchain(null, io);

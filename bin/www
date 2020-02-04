@@ -6,12 +6,14 @@
 
 var app = require('../app');
 const client = require('socket.io-client');
-const socketListeners = require('../socketListeners');
-const BlockChain = require('../modals/chain');
+const socketListeners = require('../socket/socketListeners');
+// const BlockChain = require('../modals/chain');
 var debug = require('debug')('blockchain-test:server');
 var http = require('http');
-var socketApi = require('../socketApi');
+var socketApi = require('../socket/socketApi');
 var io = socketApi.io;
+
+var {gPort} = require('../port');
 
 /**
  * Get port from environment and store in Express.
@@ -19,6 +21,7 @@ var io = socketApi.io;
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+gPort.port = port;
 
 /**
  * Create HTTP server.
@@ -27,7 +30,7 @@ app.set('port', port);
 var server = http.createServer(app);
 io.attach(server);
 
-var {blockChain} = require('../myChain');
+var {blockChain} = require('../modals/chain');
 
 // io.on('connection', (socket) => {
 //   console.info(`Socket connected, ID: ${socket.id}`);

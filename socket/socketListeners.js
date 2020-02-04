@@ -1,6 +1,6 @@
-const SocketActions = require('./constants');
-const Transaction = require('./modals/transaction');
-const Blockchain = require('./modals/chain');
+const SocketActions = require('../constants');
+const Transaction = require('../modals/transaction');
+const Blockchain = require('../modals/chain');
 
 const socketListeners = (socket, chain) => {
   socket.on(SocketActions.ADD_TRANSACTION, (sender, receiver, amount) => {

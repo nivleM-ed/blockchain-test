@@ -1,29 +1,30 @@
-
 class Transaction {
     constructor(sender, receiver, amount) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
     }
-    get sender() {
-        return this._sender;
-    }
-    set sender (in_sender) {
-        this._sender = in_sender;
+
+    getDetails() {
+        const {
+            sender,
+            receiver,
+            amount,
+            timestamp
+        } = this;
+        return {
+            sender,
+            receiver,
+            amount,
+            timestamp,
+        };
     }
 
-    get receiver() {
-        return this._receiver;
-    }
-    set receiver(in_receiver) {
-        this._receiver = in_receiver;
-    }
-
-    get amount() {
-        return this._amount;
-    }
-    set amount(in_amount) {
-        this._amount = in_amount;
+    parseTransaction(transaction) {
+        this.sender = transaction.sender;
+        this.receiver = transaction.receiver;
+        this.amount = transaction.amount;
+        this.timestamp = transaction.timestamp;
     }
 
 }

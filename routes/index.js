@@ -3,11 +3,13 @@ var router = express.Router();
 
 const axios = require('axios');
 const client = require('socket.io-client');
-const BlockChain = require('../modals/chain');
+var socketApi = require('../socket/socketApi');
+var io = socketApi.io;
+// const BlockChain = require('../modals/chain');
 const SocketActions = require('../constants');
 const socketListeners = require('../socket/socketListeners');
 
-const {blockChain} = require('../modals/chain');
+const {blockChain} = require('../iniChain');
 var {gPort} = require('../port');
 
 router.post('/nodes', (req, res) => {
@@ -56,14 +58,25 @@ router.post('/transaction', (req, res) => {
     receiver,
     amount
   } = req.body;
-  io.emit(SocketActions.ADD_TRANSACTION, sender, receiver, amount);
+  try{
+    io.emit(SocketActions.ADD_TRANSACTION, sender, receiver, amount);
+  } catch(e) {
+    console.log(e);
+    res.send(e)
+  }
   res.json({
     message: 'transaction success'
   }).end();
 });
 
 router.get('/chain', (req, res) => {
-  res.json(blockChain.toArray()).end();
+  try{
+    var test = blockChain.toArray();
+  } catch(e) {
+    console.log(e)
+    res.send(e)
+  }
+  res.json(test).end();
 });
 
 module.exports = router;

@@ -30,7 +30,7 @@ gPort.port = port;
 var server = http.createServer(app);
 io.attach(server);
 
-var {blockChain} = require('../modals/chain');
+var {blockChain} = require('../iniChain');
 
 // io.on('connection', (socket) => {
 //   console.info(`Socket connected, ID: ${socket.id}`);

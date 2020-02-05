@@ -1,8 +1,10 @@
 const Block = require('./block');
 const actions = require('../constants');
-const { generateProof, isProofValid } = require('../utils/proof');
-var socketApi = require('../socket/socketApi');
-var io = socketApi.io;
+const {
+  generateProof,
+  isProofValid
+} = require('../utils/proof');
+
 
 class Blockchain {
   constructor(blocks, io) {
@@ -30,7 +32,10 @@ class Blockchain {
       const previousBlock = this.lastBlock();
       process.env.BREAK = false;
       const block = new Block(previousBlock.getIndex() + 1, previousBlock.hashValue(), previousBlock.getProof(), this.currentTransactions);
-      const { proof, dontMine } = await generateProof(previousBlock.getProof());
+      const {
+        proof,
+        dontMine
+      } = await generateProof(previousBlock.getProof());
       block.setProof(proof);
       this.currentTransactions = [];
       if (dontMine !== 'true') {
@@ -48,7 +53,9 @@ class Blockchain {
   }
 
   checkValidity() {
-    const { blocks } = this;
+    const {
+      blocks
+    } = this;
     let previousBlock = blocks[0];
     for (let index = 1; index < blocks.length; index++) {
       const currentBlock = blocks[index];
@@ -63,8 +70,21 @@ class Blockchain {
     return true;
   }
 
+  parseChain(blocks) {
+    this.blocks = blocks.map(block => {
+      const parsedBlock = new Block(0);
+      parsedBlock.parseBlock(block);
+      return parsedBlock;
+    });
+  }
+
+  toArray() {
+    return this.blocks.map(block => block.getDetails());
+  }
+  printBlocks() {
+    this.blocks.forEach(block => console.log(block));
+  }
   /* Stringify and Parsing functions */
 }
 
-// module.exports = Blockchain;
-exports.blockChain = new Blockchain(null, io);
+module.exports = Blockchain;

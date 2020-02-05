@@ -27,10 +27,10 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-io.attach(server);
+io = io.attach(server);
 
 myPorts.port = port;
-myPorts.io = io;
+// myPorts.io = io;
 
 var {doIniBc} = require('../iniChain');
 doIniBc();

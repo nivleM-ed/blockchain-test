@@ -1,5 +1,15 @@
 const Blockchain = require('./modals/chain');
-var socketApi = require('./socket/socketApi');
-var io = socketApi.io;
+const myPorts = require('./port');
+const client = require('socket.io-client');
+const socketListeners = require('./socket/socketListeners');
+// var socketApi = require('./socket/socketApi');
+// var io = socketApi.io;
 
-exports.blockChain = new Blockchain(null, io);
+const blockChain = new Blockchain(null, myPorts.io);
+
+function doIniBc() {
+    blockChain.addNode(socketListeners(client(`http://localhost:${myPorts.port}`), blockChain));
+}
+
+exports.blockChain = blockChain;
+exports.doIniBc = doIniBc;

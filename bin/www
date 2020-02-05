@@ -13,7 +13,7 @@ var http = require('http');
 var socketApi = require('../socket/socketApi');
 var io = socketApi.io;
 
-var {gPort} = require('../port');
+var myPorts = require('../port');
 
 /**
  * Get port from environment and store in Express.
@@ -21,7 +21,6 @@ var {gPort} = require('../port');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-gPort.port = port;
 
 /**
  * Create HTTP server.
@@ -30,7 +29,11 @@ gPort.port = port;
 var server = http.createServer(app);
 io.attach(server);
 
-var {blockChain} = require('../iniChain');
+myPorts.port = port;
+myPorts.io = io;
+
+var {doIniBc} = require('../iniChain');
+doIniBc();
 
 // io.on('connection', (socket) => {
 //   console.info(`Socket connected, ID: ${socket.id}`);
@@ -43,7 +46,7 @@ var {blockChain} = require('../iniChain');
  * Listen on provided port, on all network interfaces.
  */
 
-blockChain.addNode(socketListeners(client(`http://localhost:${port}`), blockChain));
+// blockChain.addNode(socketListeners(client(`http://localhost:${port}`), blockChain));
 
 server.listen(port, () => console.info(`Express server running on ${port}...`));
 server.on('error', onError);

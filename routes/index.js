@@ -10,7 +10,7 @@ const SocketActions = require('../constants');
 const socketListeners = require('../socket/socketListeners');
 
 const {blockChain} = require('../iniChain');
-var {gPort} = require('../port');
+var myPorts = require('../port');
 
 router.post('/nodes', (req, res) => {
   const {
@@ -39,7 +39,7 @@ router.post('/nodes', (req, res) => {
     } else {
       axios.post(`${node}/nodes?callback=true`, {
         host: req.hostname,
-        port: gPort.port,
+        port: myPorts.port,
       });
       console.info(`Added node ${node}`);
       res.json({

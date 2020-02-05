@@ -1,11 +1,9 @@
-class Port {
-    get id() {
-        return this._port;
-    }
-    set id(in_port) {
-        this._port = in_port;
-    }
-}
+var socket_io = require('socket.io');
+var io = socket_io();
+var myPorts = {};
 
-exports.gPort = new Port();
+myPorts.io = io;
+myPorts.port = null;
+
+module.exports = myPorts;
 

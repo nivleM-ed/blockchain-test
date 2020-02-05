@@ -5,9 +5,6 @@
  */
 
 var app = require('../app');
-const client = require('socket.io-client');
-const socketListeners = require('../socket/socketListeners');
-// const BlockChain = require('../modals/chain');
 var debug = require('debug')('blockchain-test:server');
 var http = require('http');
 var socketApi = require('../socket/socketApi');
@@ -28,6 +25,7 @@ app.set('port', port);
 
 var server = http.createServer(app);
 io = io.attach(server);
+
 
 myPorts.port = port;
 // myPorts.io = io;

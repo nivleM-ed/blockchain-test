@@ -2,7 +2,7 @@ const crypto = require('crypto');
 
 const generateProof = (previousProof) => new Promise((resolve) => {
   setImmediate(async () => {
-    let proof = Math.random() * 10000000001;
+    let proof = Math.random() * 1001; //reduced to lessen processing
     const dontMine = process.env.BREAK;
     if (isProofValid(previousProof, proof) || dontMine === 'true') {
       resolve({ proof, dontMine });

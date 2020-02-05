@@ -3,14 +3,14 @@ var router = express.Router();
 
 const axios = require('axios');
 const client = require('socket.io-client');
-var socketApi = require('../socket/socketApi');
-var io = socketApi.io;
+// var socketApi = require('../socket/socketApi');
 // const BlockChain = require('../modals/chain');
 const SocketActions = require('../constants');
 const socketListeners = require('../socket/socketListeners');
 
 const {blockChain} = require('../iniChain');
 var myPorts = require('../port');
+var io = myPorts.io;
 
 router.post('/nodes', (req, res) => {
   const {
